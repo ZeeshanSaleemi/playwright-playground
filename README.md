@@ -125,3 +125,4 @@ tests/links.spec.ts     →  uses  →  pages/FooterPage.ts
 |---|---|
 | `homepage.spec.ts` | Title, article cards, navigation, link format |
 | `links.spec.ts` | Footer links reachable, internal link format |
+
