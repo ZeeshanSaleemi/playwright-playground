@@ -3,8 +3,8 @@ name: Playwright Tests
 # ── SECTION 1: TRIGGER ──────────────────────────────────────────────────────
 # Runs this workflow whenever code is pushed to the main branch.
 on:
-  push:
-    branches: [main]
+  pull_request:
+    branches: [ develop, main ]
 
 # ── SECTION 2: JOB DEFINITION ───────────────────────────────────────────────
 # A workflow is made of one or more "jobs". Each job runs in a fresh VM.
