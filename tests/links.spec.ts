@@ -12,7 +12,7 @@ test.describe('Links', () => {
     await footerPage.goto();
   });
 
-  test('all footer links are reachable', async ({ request }) => {
+  test('all footer links are reachable @smoke @regression @navigation', async ({ request }) => {
     const hrefs = await footerPage.getFooterLinkHrefs();
     console.log(`Checking ${hrefs.length} footer links...`);
 
@@ -20,7 +20,7 @@ test.describe('Links', () => {
     expect(broken, `Broken links:\n${broken.join('\n')}`).toHaveLength(0);
   });
 
-  test('footer has links', async () => {
+  test('footer has links @regression @navigation', async () => {
     await footerPage.assertFooterHasLinks();
     const count = await footerPage.footerLinks.count();
     console.log(`Found ${count} footer links`);
@@ -32,7 +32,7 @@ test.describe('Links', () => {
     }
   });
 
-  test('all links on homepage have valid format', async ({ page }) => {
+  test('all links on homepage have valid format @regression @navigation', async ({ page }) => {
     const links = page.locator('a[href^="/"]');
     const count = await links.count();
 
