@@ -9,3 +9,12 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Generated report folders
+allure-results/
+allure-results-demo/
+allure-report/
+allure-report-demo/
+playwright-report/
+main-html-report/
+demo-html-report/
