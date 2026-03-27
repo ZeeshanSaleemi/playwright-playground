@@ -1,21 +1,19 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './demo-tests',
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: 2,
   reporter: [
-  ['html', { open: 'never' }],
-  ['allure-playwright'],
+  ['html', { open: 'never', outputFolder: 'demo-html-report' }],
+  ['allure-playwright', { resultsDir: 'allure-results-demo' }],
   ],
   timeout: 60000,
 
   webServer: {
     command: 'node serve.js',
     url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
 
   use: {
@@ -23,7 +21,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     navigationTimeout: 60000,
-    headless: process.env.CI ? true : false,
+    headless: false,
   },
 
   projects: [
@@ -31,13 +29,5 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
   ],
 });
