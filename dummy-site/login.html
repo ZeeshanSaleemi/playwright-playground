@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In - Daily News</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; color: #333; background: #f4f4f4; }
+    nav { background: #1a1a2e; padding: 12px 20px; display: flex; gap: 20px; align-items: center; }
+    nav a { color: #fff; text-decoration: none; font-weight: bold; }
+    nav a:hover { color: #e94560; }
+    nav .nav-auth { margin-left: auto; display: flex; gap: 12px; }
+    nav .btn-signup { background: #e94560; color: #fff; padding: 6px 14px; border-radius: 4px; }
+    nav .btn-signup:hover { background: #c73652; color: #fff; }
+    .container { max-width: 440px; margin: 60px auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    h1 { font-size: 1.6rem; margin-bottom: 8px; color: #1a1a2e; }
+    .subtitle { color: #666; margin-bottom: 28px; font-size: 0.95rem; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 0.9rem; }
+    input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.95rem; }
+    input:focus { outline: none; border-color: #1a1a2e; }
+    .btn { width: 100%; padding: 12px; background: #1a1a2e; color: #fff; border: none; border-radius: 4px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 8px; }
+    .btn:hover { background: #16213e; }
+    .error-message { color: #e94560; background: #ffeef0; border: 1px solid #f5c6cb; padding: 10px 14px; border-radius: 4px; margin-bottom: 18px; font-size: 0.9rem; display: none; }
+    .success-message { color: #155724; background: #d4edda; border: 1px solid #c3e6cb; padding: 10px 14px; border-radius: 4px; margin-bottom: 18px; font-size: 0.9rem; display: none; }
+    .signup-link { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666; }
+    .signup-link a { color: #e94560; text-decoration: none; font-weight: bold; }
+    .signup-link a:hover { text-decoration: underline; }
+    .welcome-banner { background: #1a1a2e; color: #fff; padding: 10px 14px; border-radius: 4px; margin-bottom: 18px; font-size: 0.9rem; display: none; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/">Home</a>
+    <a href="/sport">Sports</a>
+    <a href="/tech">Technology</a>
+    <a href="/world">World</a>
+    <div class="nav-auth">
+      <a href="/login">Login</a>
+      <a href="/signup" class="btn-signup">Sign Up</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Log in to access your personalised Daily News feed.</p>
+
+    <div class="error-message" data-testid="error-message"></div>
+    <div class="success-message" data-testid="success-message"></div>
+    <div class="welcome-banner" data-testid="welcome-banner"></div>
+
+    <form id="login-form" novalidate>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" data-testid="email-input" placeholder="jane@example.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" data-testid="password-input" placeholder="Your password" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn" data-testid="login-button">Log In</button>
+    </form>
+
+    <p class="signup-link">Don't have an account? <a href="/signup" data-testid="signup-link">Sign up</a></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const errorEl = document.querySelector('[data-testid="error-message"]');
+    const successEl = document.querySelector('[data-testid="success-message"]');
+    const welcomeEl = document.querySelector('[data-testid="welcome-banner"]');
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+      successEl.style.display = 'none';
+      welcomeEl.style.display = 'none';
+    }
+
+    function showSuccess(msg) {
+      successEl.textContent = msg;
+      successEl.style.display = 'block';
+      errorEl.style.display = 'none';
+      welcomeEl.style.display = 'none';
+    }
+
+    function clearMessages() {
+      errorEl.style.display = 'none';
+      successEl.style.display = 'none';
+      welcomeEl.style.display = 'none';
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearMessages();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email) { showError('Email address is required.'); return; }
+      if (!password) { showError('Password is required.'); return; }
+
+      const users = JSON.parse(localStorage.getItem('dn_users') || '[]');
+      const user = users.find(u => u.email === email);
+
+      if (!user) { showError('No account found with that email address.'); return; }
+      if (user.password !== password) { showError('Incorrect password. Please try again.'); return; }
+
+      localStorage.setItem('dn_session', JSON.stringify({ name: user.name, email: user.email }));
+      showSuccess('Login successful! Redirecting…');
+      setTimeout(() => { window.location.href = '/'; }, 1200);
+    });
+  </script>
+
+</body>
+</html>

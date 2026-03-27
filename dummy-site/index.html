@@ -7,9 +7,12 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; color: #333; }
-    nav { background: #1a1a2e; padding: 12px 20px; display: flex; gap: 20px; }
+    nav { background: #1a1a2e; padding: 12px 20px; display: flex; gap: 20px; align-items: center; }
     nav a { color: #fff; text-decoration: none; font-weight: bold; }
     nav a:hover { color: #e94560; }
+    nav .nav-auth { margin-left: auto; display: flex; gap: 12px; }
+    nav .btn-signup { background: #e94560; color: #fff; padding: 6px 14px; border-radius: 4px; }
+    nav .btn-signup:hover { background: #c73652; color: #fff; }
     .hero { background: #16213e; color: #fff; padding: 40px 20px; text-align: center; }
     .hero h1 { font-size: 2rem; margin-bottom: 10px; }
     .articles { display: flex; flex-wrap: wrap; gap: 20px; padding: 30px 20px; }
@@ -34,6 +37,10 @@
     <a href="/business">Business</a>
     <a href="/entertainment">Entertainment</a>
     <a href="/health">Health</a>
+    <div class="nav-auth">
+      <a href="/login">Login</a>
+      <a href="/signup" class="btn-signup">Sign Up</a>
+    </div>
   </nav>
 
   <section class="hero">
