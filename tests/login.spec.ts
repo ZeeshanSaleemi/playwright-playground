@@ -21,42 +21,42 @@ test.describe('Log In', () => {
     await loginPage.goto();
   });
 
-  test('login page loads with all form fields', async () => {
+  test('login page loads with all form fields @regression @auth', async () => {
     await loginPage.assertOnLoginPage();
     await expect(loginPage.emailInput).toBeVisible();
     await expect(loginPage.passwordInput).toBeVisible();
     await expect(loginPage.loginButton).toBeVisible();
   });
 
-  test('successful login shows success message and redirects to home', async ({ page }) => {
+  test('successful login shows success message and redirects to home @smoke @regression @auth @navigation', async ({ page }) => {
     await loginPage.login(TEST_USER.email, TEST_USER.password);
 
     await loginPage.assertSuccessVisible('Login successful');
     await expect(page).toHaveURL('/', { timeout: 5000 });
   });
 
-  test('submitting empty form shows email required error', async () => {
+  test('submitting empty form shows email required error @regression @auth', async () => {
     await loginPage.submit();
     await loginPage.assertErrorVisible('Email address is required');
   });
 
-  test('missing password shows error', async () => {
+  test('missing password shows error @regression @auth', async () => {
     await loginPage.fillEmail(TEST_USER.email);
     await loginPage.submit();
     await loginPage.assertErrorVisible('Password is required');
   });
 
-  test('unknown email shows error', async () => {
+  test('unknown email shows error @regression @auth', async () => {
     await loginPage.login('nobody@example.com', 'password123');
     await loginPage.assertErrorVisible('No account found');
   });
 
-  test('wrong password shows error', async () => {
+  test('wrong password shows error @regression @auth', async () => {
     await loginPage.login(TEST_USER.email, 'wrongpassword');
     await loginPage.assertErrorVisible('Incorrect password');
   });
 
-  test('successful login stores session in localStorage', async ({ page }) => {
+  test('successful login stores session in localStorage @regression @auth', async ({ page }) => {
     await loginPage.login(TEST_USER.email, TEST_USER.password);
 
     // Wait for redirect then verify session was stored
@@ -69,7 +69,7 @@ test.describe('Log In', () => {
     expect(parsed.name).toBe(TEST_USER.name);
   });
 
-  test('signup link navigates to signup page', async ({ page }) => {
+  test('signup link navigates to signup page @regression @auth @navigation', async ({ page }) => {
     await loginPage.signupLink.click();
     await expect(page).toHaveURL(/signup/);
   });
