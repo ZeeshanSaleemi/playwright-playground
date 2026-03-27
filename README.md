@@ -93,7 +93,22 @@ npx playwright install --with-deps chromium
 **Run all tests**
 
 ```bash
-npx playwright test
+npm test
+```
+
+**Run tests by tag**
+
+```bash
+npm run test:smoke
+npm run test:regression
+npm run test:auth
+npm run test:navigation
+```
+
+**Run tests in headed mode**
+
+```bash
+npm run test:headed
 ```
 
 **Run a specific test file**
@@ -105,32 +120,34 @@ npx playwright test tests/signup.spec.ts
 npx playwright test tests/links.spec.ts
 ```
 
-**Run tests by tag**
-
-```bash
-npx playwright test --grep @smoke
-npx playwright test --grep @regression
-npx playwright test --grep @auth
-npx playwright test --grep @navigation
-```
-
 **Run demo tests**
 
 ```bash
-npx playwright test --config=playwright.demo.config.ts
+npm run test:demo
 ```
 
 **View the HTML report**
 
 ```bash
-npx playwright show-report
+npm run report
 ```
 
-**View the Allure report**
+**Allure reporting (main tests)**
 
 ```bash
-npx allure generate allure-results --clean
-npx allure open
+npm run allure:generate   # generate report from allure-results/
+npm run allure:open       # open the generated report
+npm run allure:report     # generate + open in one command
+npm run allure:clean      # delete allure-results/
+```
+
+**Allure reporting (demo tests)**
+
+```bash
+npm run demo:allure:generate   # generate report from allure-results-demo/
+npm run demo:allure:open       # open the generated report
+npm run demo:allure:report     # generate + open in one command
+npm run demo:clean             # delete allure-results-demo/
 ```
 
 ---
@@ -173,15 +190,15 @@ FooterPage      ← used by tests/links.spec.ts
 
 | Report | Location | How to Generate |
 |---|---|---|
-| HTML Report | `playwright-report/` | Auto-generated after `npx playwright test` |
-| Allure Report | `allure-report/` | `npx allure generate allure-results --clean` |
-| Demo Allure Report | `allure-report/` (from `allure-results-demo/`) | Run with demo config |
+| HTML Report | `playwright-report/` | Auto-generated after `npm test` |
+| Allure Report | `allure-report/` | `npm run allure:report` |
+| Demo Allure Report | `allure-report-demo/` | `npm run demo:allure:report` |
 
 ---
 
 ## CI/CD
 
-Tests run automatically on every pull request targeting `develop` or `main` via GitHub Actions (`.github/workflows/playwright.yml`).
+Tests run automatically on every pull request targeting `main` via GitHub Actions (`.github/workflows/playwright.yml`).
 
 The pipeline:
 1. Checks out code

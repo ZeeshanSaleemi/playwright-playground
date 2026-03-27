@@ -1,9 +1,27 @@
 {
-  "name": "PLAYWRIGHT-PROJECT01",
+  "name": "playwright-playground",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:auth": "playwright test --grep @auth",
+    "test:navigation": "playwright test --grep @navigation",
+    "test:demo": "playwright test --config=playwright.demo.config.ts",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "allure:clean": "npx rimraf allure-results",
+    "allure:generate": "npx allure generate allure-results --clean -o allure-report",
+    "allure:open": "npx allure open allure-report",
+    "allure:report": "npx allure generate allure-results --clean -o allure-report && npx allure open allure-report",
+    "demo:clean": "npx rimraf allure-results-demo",
+    "demo:test": "playwright test --config=playwright.demo.config.ts",
+    "demo:allure:generate": "npx allure generate allure-results-demo --clean -o allure-report-demo",
+    "demo:allure:open": "npx allure open allure-report-demo",
+    "demo:allure:report": "npx allure generate allure-results-demo --clean -o allure-report-demo && npx allure open allure-report-demo"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -12,6 +30,7 @@
     "@playwright/test": "^1.58.2",
     "@types/node": "^25.5.0",
     "allure-commandline": "^2.38.1",
-    "allure-playwright": "^3.6.0"
+    "allure-playwright": "^3.6.0",
+    "rimraf": "^6.1.3"
   }
 }
