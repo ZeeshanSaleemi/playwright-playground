@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Daily News</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; color: #333; background: #f4f4f4; }
+    nav { background: #1a1a2e; padding: 12px 20px; display: flex; gap: 20px; align-items: center; }
+    nav a { color: #fff; text-decoration: none; font-weight: bold; }
+    nav a:hover { color: #e94560; }
+    nav .nav-auth { margin-left: auto; display: flex; gap: 12px; }
+    nav .btn-signup { background: #e94560; color: #fff; padding: 6px 14px; border-radius: 4px; }
+    nav .btn-signup:hover { background: #c73652; color: #fff; }
+    .container { max-width: 440px; margin: 60px auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    h1 { font-size: 1.6rem; margin-bottom: 8px; color: #1a1a2e; }
+    .subtitle { color: #666; margin-bottom: 28px; font-size: 0.95rem; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 0.9rem; }
+    input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.95rem; }
+    input:focus { outline: none; border-color: #1a1a2e; }
+    input.invalid { border-color: #e94560; }
+    .btn { width: 100%; padding: 12px; background: #1a1a2e; color: #fff; border: none; border-radius: 4px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 8px; }
+    .btn:hover { background: #16213e; }
+    .error-message { color: #e94560; background: #ffeef0; border: 1px solid #f5c6cb; padding: 10px 14px; border-radius: 4px; margin-bottom: 18px; font-size: 0.9rem; display: none; }
+    .success-message { color: #155724; background: #d4edda; border: 1px solid #c3e6cb; padding: 10px 14px; border-radius: 4px; margin-bottom: 18px; font-size: 0.9rem; display: none; }
+    .login-link { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666; }
+    .login-link a { color: #e94560; text-decoration: none; font-weight: bold; }
+    .login-link a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/">Home</a>
+    <a href="/sport">Sports</a>
+    <a href="/tech">Technology</a>
+    <a href="/world">World</a>
+    <div class="nav-auth">
+      <a href="/login">Login</a>
+      <a href="/signup" class="btn-signup">Sign Up</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Create an Account</h1>
+    <p class="subtitle">Join Daily News to save articles and personalise your feed.</p>
+
+    <div class="error-message" data-testid="error-message"></div>
+    <div class="success-message" data-testid="success-message"></div>
+
+    <form id="signup-form" novalidate>
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" data-testid="name-input" placeholder="Jane Doe" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" data-testid="email-input" placeholder="jane@example.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" data-testid="password-input" placeholder="At least 6 characters" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" data-testid="confirm-password-input" placeholder="Repeat your password" autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn" data-testid="signup-button">Create Account</button>
+    </form>
+
+    <p class="login-link">Already have an account? <a href="/login" data-testid="login-link">Log in</a></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('signup-form');
+    const errorEl = document.querySelector('[data-testid="error-message"]');
+    const successEl = document.querySelector('[data-testid="success-message"]');
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+      successEl.style.display = 'none';
+    }
+
+    function showSuccess(msg) {
+      successEl.textContent = msg;
+      successEl.style.display = 'block';
+      errorEl.style.display = 'none';
+    }
+
+    function clearMessages() {
+      errorEl.style.display = 'none';
+      successEl.style.display = 'none';
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearMessages();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (!name) { showError('Full name is required.'); return; }
+      if (!email) { showError('Email address is required.'); return; }
+      if (!isValidEmail(email)) { showError('Please enter a valid email address.'); return; }
+      if (!password) { showError('Password is required.'); return; }
+      if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
+      if (!confirmPassword) { showError('Please confirm your password.'); return; }
+      if (password !== confirmPassword) { showError('Passwords do not match.'); return; }
+
+      const users = JSON.parse(localStorage.getItem('dn_users') || '[]');
+      if (users.find(u => u.email === email)) {
+        showError('An account with this email already exists.');
+        return;
+      }
+
+      users.push({ name, email, password });
+      localStorage.setItem('dn_users', JSON.stringify(users));
+      showSuccess('Account created successfully! Redirecting to login…');
+      setTimeout(() => { window.location.href = '/login'; }, 1500);
+    });
+  </script>
+
+</body>
+</html>
